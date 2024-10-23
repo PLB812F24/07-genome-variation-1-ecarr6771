@@ -1,13 +1,14 @@
 ---
 title: "Intro-to-plotting"
 output: html_document
-date: "2024-10-01"
+date: "2024-10-23"
+author: Eleanor Carr
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
-
+setwd("/Users/eleanor/Documents/Fall2024/PLB812/Homework/07-genome-variation-1-ecarr6771/")
 ```
 
 Welcome to R markdown! We will be using this to run R and make figures. Some quick tips. You're reading this in the coding window. Like jupyter notebooks, code is written in chunks, but unlike jupyter, there is text written in markdown outside the chunks (like here).
@@ -19,7 +20,7 @@ Code outputs are printed in the Console window, below this one.
 First, load in the data with the read.table() function. If you run into issues, you can also use the "Import dataset" tool in the File menu to do this through the Rstudio GUI.
 
 ```{r}
-penguins = read.table('/mnt/research/PLB812_FS24_S001/Intro-to-Plots/penguins.txt', header=T)
+penguins = read.table('penguins.txt', header=T)
 
 ```
 
@@ -38,7 +39,7 @@ First research question: How much does flipper length vary in our penguin datase
 Here is some code we can use to make a histogram:
 ```{r}
 ggplot(penguins, aes(x=flipper_length_mm)) + #information about the dataset
-geom_histogram(binwidth=1) #the type of plot we want to make
+geom_histogram(binwidth=3) #the type of plot we want to make
 ```
 
 Note that in the geom_histogram() function, we set the width of the histogram bins as 1. Try editing the code to adjust the width of the histogram bins. Keep the code with the bin width that you think is 'best'.
@@ -47,7 +48,7 @@ This graph is kind of ugly. One of the fun parts of making plots is that you can
 
 ```{r}
 ggplot(penguins, aes(x = flipper_length_mm)) + #information about the dataset
-  geom_histogram(binwidth=1, color = "white", fill="navy") + #make the figure
+  geom_histogram(binwidth=3, color = "white", fill="navy") + #make the figure
   labs(x = "Flipper Length (mm)", y = "Frequency") + #add labels
 theme_minimal() #get rid of the default gray background
 
@@ -90,7 +91,7 @@ You can also change visual aspects of this plot. See the code below.
 ```{r}
 ggplot(penguins, aes(x = bill_length_mm, y = bill_depth_mm, color = species)) +
   geom_point() +
-  theme_minimal()
+  theme_minimal() +
   scale_colour_manual(values = c("blue", "red", "purple")) + #change the color
 geom_point(size = 2) #change the size 
 
@@ -103,26 +104,35 @@ Now that you've worked through the tutorial, here are some homework questions.
 1A) Make a histogram of body mass (body_mass_g). Choose the colors and labels that you like best
 
 ```{r}
-
+ggplot(penguins, aes(body_mass_g)) + 
+  geom_histogram(binwidth = 100, color = 'white', fill = 'purple4') +
+  labs(x="Body Mass (g)", y = "Count") +
+  theme_minimal()
 ```
 
 1B) Make density plot that compares body mass across different species.
 
 ```{r}
-
+ggplot(penguins, aes(body_mass_g, fill = species))+
+  geom_density(alpha = .7) +
+  labs(x = "Body Mass (g)", y = "Frequency")
 ```
 
 2A) Create a scatterplot of bill depth (x) and flipper length (y) colored by species.
 
 ```{r}
-
+ggplot(penguins, aes(x = bill_depth_mm, y = flipper_length_mm, color = species)) +
+  geom_point() +
+  labs(x = "Bill Depth (mm)", y = "Flipper Length (mm)")
 ```
 
 2B) What happens when you color the data points by body mass (body_mass_g) instead of species?
-
+This changes from discrete colors (e.g. red, green, pink) to a gradient because this is a continuous variable. It's cool looking!
 ```{r}
 
-
+ggplot(penguins, aes(x = bill_depth_mm, y = flipper_length_mm, color = body_mass_g)) +
+  geom_point() +
+  labs(x = "Bill Depth (mm)", y = "Flipper Length (mm)")
 ```
 
 
